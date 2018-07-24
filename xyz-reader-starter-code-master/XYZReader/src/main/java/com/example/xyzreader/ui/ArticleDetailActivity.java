@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
@@ -39,10 +40,13 @@ import com.example.xyzreader.data.ItemsContract;
 /**
  * An activity representing a single Article detail screen, letting you swipe between articles.
  */
-public class ArticleDetailActivity extends AppCompatActivity{
+public class ArticleDetailActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener{
 
+
+    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.9f;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private ActionBar mActionBar;
+    private Toolbar mToolbar;
     private ImageView mImage;
     private Cursor mCursor;
     private long mStartId;
@@ -84,9 +88,11 @@ public class ArticleDetailActivity extends AppCompatActivity{
         setContentView(R.layout.activity_article_detail);
 
         mImage = (ImageView) findViewById(R.id.iv_toolbar);
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        appBarLayout.addOnOffsetChangedListener(this);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         mActionBar = getSupportActionBar();
         if (mActionBar != null) {
             mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -115,7 +121,7 @@ public class ArticleDetailActivity extends AppCompatActivity{
             }
         });
 
-        if (getIntent() != null && getIntent().getData() != null) {
+        if (getIntent() != null) {
             //mStartId = ItemsContract.Items.getItemId(getIntent().getData());
             //mSelectedItemId = mStartId;
             mStartPosition = getIntent().getIntExtra("position", 0);
@@ -148,6 +154,27 @@ public class ArticleDetailActivity extends AppCompatActivity{
 
                         }
                     });
+    }
+
+    public void share(View view) {
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        int maxScroll = appBarLayout.getTotalScrollRange();
+        float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
+
+        handleToolbarTitleVisibility(percentage);
+    }
+    private void handleToolbarTitleVisibility(float percentage) {
+        if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
+
+            mToolbar.setTitleTextColor(getResources().getColor(R.color.ltgray));
+
+        } else {
+
+            mToolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        }
     }
 
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
@@ -187,4 +214,5 @@ public class ArticleDetailActivity extends AppCompatActivity{
 
         return super.onOptionsItemSelected(item);
     }
+
 }
