@@ -1,1 +1,1 @@
-include ':XYZReader'
+include ':XYZReader', ':apache.commons.lang3'

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginBottom="@dimen/detail_metabar_vert_padding"
-        android:background="@color/theme_primary_dark"
+        android:background="@color/color_ltgray"
         android:orientation="vertical"
         android:paddingBottom="@dimen/detail_metabar_vert_padding"
         android:paddingLeft="@dimen/detail_inner_horiz_margin"
@@ -45,9 +45,17 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginRight="24dp"
                 android:layout_marginEnd="24dp"
-                android:textColor="@color/ltgray"
+                android:textColor="@color/color_ltgray"
                 android:textSize="@dimen/detail_body_text_size"
                 android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="100dp" />
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

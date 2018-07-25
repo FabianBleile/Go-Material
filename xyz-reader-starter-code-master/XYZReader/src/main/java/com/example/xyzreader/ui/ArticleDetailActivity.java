@@ -16,12 +16,15 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -37,17 +40,31 @@ import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 /**
  * An activity representing a single Article detail screen, letting you swipe between articles.
  */
 public class ArticleDetailActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener{
 
+    private static final String TAG = "ArticleDetailActivity";
+
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
+    // Use default locale format
+    private SimpleDateFormat outputFormat = new SimpleDateFormat();
+    // Most time functions can only handle 1902 - 2037
+    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.9f;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private ActionBar mActionBar;
     private Toolbar mToolbar;
     private ImageView mImage;
+    private CharSequence mSubtitle;
+    private CharSequence mBodyText;
     private Cursor mCursor;
     private long mStartId;
     private int mStartPosition;
@@ -135,6 +152,7 @@ public class ArticleDetailActivity extends AppCompatActivity implements AppBarLa
             //  Title
             if (mActionBar != null) {
                 mCollapsingToolbarLayout.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
+                mCollapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.white));
             }
             //------------------
             //  Photo
@@ -157,6 +175,10 @@ public class ArticleDetailActivity extends AppCompatActivity implements AppBarLa
     }
 
     public void share(View view) {
+        startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(ArticleDetailActivity.this)
+                .setType("text/plain")
+                .setText("Some sample text")
+                .getIntent(), getString(R.string.action_share)));
     }
 
     @Override
@@ -164,12 +186,12 @@ public class ArticleDetailActivity extends AppCompatActivity implements AppBarLa
         int maxScroll = appBarLayout.getTotalScrollRange();
         float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
 
-        handleToolbarTitleVisibility(percentage);
+        handleToolbarTitleColor(percentage);
     }
-    private void handleToolbarTitleVisibility(float percentage) {
+    private void handleToolbarTitleColor(float percentage) {
         if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
 
-            mToolbar.setTitleTextColor(getResources().getColor(R.color.ltgray));
+            mToolbar.setTitleTextColor(getResources().getColor(R.color.color_ltgray));
 
         } else {
 
@@ -180,14 +202,6 @@ public class ArticleDetailActivity extends AppCompatActivity implements AppBarLa
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
-        }
-
-        @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            super.setPrimaryItem(container, position, object);
-            ArticleDetailFragment fragment = (ArticleDetailFragment) object;
-            if (fragment != null) {
-            }
         }
 
 
