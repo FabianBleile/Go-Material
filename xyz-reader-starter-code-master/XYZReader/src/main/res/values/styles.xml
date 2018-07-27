@@ -18,9 +18,9 @@
 <resources>
 
     <style name="AppTheme" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <item name="android:colorAccent">@color/color_primary_dark</item>
-        <item name="android:colorPrimary">@color/color_primary</item>
-        <item name="android:colorPrimaryDark">@color/color_accent</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="android:textColorPrimary">@color/color_ltgray</item>
         <item name="android:textColorSecondary">@color/white</item>
         <item name="android:textColorTertiary">@color/black</item>

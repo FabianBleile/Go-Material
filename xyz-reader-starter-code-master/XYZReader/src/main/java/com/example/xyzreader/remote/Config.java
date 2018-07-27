@@ -14,9 +14,9 @@ public class Config {
         try {
             //url = new URL("https://go.udacity.com/xyz-reader-json" );
             url = new URL("https://raw.githubusercontent.com/SuperAwesomeness/XYZReader/master/data.json" );
-        } catch (MalformedURLException ignored) {
-            // TODO: throw a real error
-            Log.e(TAG, "Please check your internet connection.");
+        } catch (MalformedURLException e)  {
+            // T ODO: throw a real error
+            throw new Error("Please check your internet connection.", e);
         }
 
         BASE_URL = url;

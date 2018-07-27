@@ -19,8 +19,8 @@
     <color name="photo_placeholder">#ccc</color>
 
     <color name="color_primary">#FFC107</color>
-    <color name="color_primary_dark">#FF8F00</color>
-    <color name="color_accent">#FFE57F</color>
+    <color name="color_primary_dark">#FFA000</color>
+    <color name="color_accent">#009688</color>
     <color name="color_ltgray">#404040</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="white">#FFFFFF</color>
